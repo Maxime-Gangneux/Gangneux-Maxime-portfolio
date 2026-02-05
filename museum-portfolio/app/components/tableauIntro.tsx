@@ -1,16 +1,16 @@
-import { Html } from '@react-three/drei'
-import React, { FC, useState } from 'react'
+import { CanvasTexture } from 'three'
+import React, { FC, useState, useMemo, useEffect, useRef } from 'react'
 
-type TableauHTMLProps = React.ComponentProps<'group'> & {
-  htmlScale?: number
-  onZoomRequest?: () => void
+type Tableau3DProps = React.ComponentProps<'group'> & {
+  scale?: number
+  onZoomRequest?: (title) => void
   imageUrl?: string
   title?: string
   subtitle?: string
 }
 
-export const TableauIntro: FC<TableauHTMLProps> = ({
-  htmlScale = 0.3,
+export const TableauIntro: FC<Tableau3DProps> = ({
+  scale = 0.75,
   onZoomRequest,
   imageUrl = '/arsmain.png',
   title = 'ARS Telecom',
@@ -19,83 +19,119 @@ export const TableauIntro: FC<TableauHTMLProps> = ({
 }) => {
   const [isHovered, setIsHovered] = useState(false)
 
+  const htmlWidth = 127
+  const htmlHeight = 175
+
+  const blurRef = useRef(8)
+  const brightnessRef = useRef(0.5)
+  const animationRef = useRef<number | null>(null)
+
+  // Création du canvas et texture
+  const canvasTexture = useMemo(() => {
+    const canvas = document.createElement('canvas')
+    canvas.width = htmlWidth * 2
+    canvas.height = htmlHeight * 2
+
+    // Transition CSS (pour fallback, même si on anime avec requestAnimationFrame)
+    canvas.style.setProperty('transition', 'filter 0.3s ease')
+
+    return new CanvasTexture(canvas)
+  }, [])
+
+  // Fonction pour dessiner le tableau
+  const drawCanvas = (blur: number, brightness: number) => {
+    const canvas = canvasTexture.image as HTMLCanvasElement
+    const ctx = canvas.getContext('2d')!
+    const img = new Image()
+    img.src = imageUrl
+    img.onload = () => {
+      const imgRatio = img.width / img.height
+      const canvasRatio = canvas.width / canvas.height
+      let drawWidth = canvas.width
+      let drawHeight = canvas.height
+      let offsetX = 0
+      let offsetY = 0
+
+      if (imgRatio > canvasRatio) {
+        drawHeight = canvas.height
+        drawWidth = img.width * (canvas.height / img.height)
+        offsetX = -(drawWidth - canvas.width) / 2
+      } else {
+        drawWidth = canvas.width
+        drawHeight = img.height * (canvas.width / img.width)
+        offsetY = -(drawHeight - canvas.height) / 2
+      }
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+      // Appliquer blur + brightness
+      ctx.filter = `blur(${blur}px) brightness(${brightness})`
+      ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight)
+
+      // Texte par-dessus
+      ctx.filter = 'none'
+      ctx.fillStyle = 'white'
+      ctx.font = 'bold 20px Arial'
+      ctx.textAlign = 'center'
+      ctx.fillText(title, canvas.width / 2, canvas.height / 2 - 10)
+      ctx.fillStyle = '#d4af37'
+      ctx.font = '16px Arial'
+      ctx.fillText(subtitle, canvas.width / 2, canvas.height / 2 + 15)
+
+      canvasTexture.needsUpdate = true
+    }
+  }
+
+  // Dessin initial
+  useEffect(() => {
+    drawCanvas(blurRef.current, brightnessRef.current)
+  }, [imageUrl, title, subtitle])
+
+  // Animation lisse blur + brightness
+  useEffect(() => {
+    const targetBlur = isHovered ? 0 : 8
+    const targetBrightness = isHovered ? 1 : 0.5
+
+    if (animationRef.current) cancelAnimationFrame(animationRef.current)
+
+    const animate = () => {
+      blurRef.current += (targetBlur - blurRef.current) * 0.15
+      brightnessRef.current += (targetBrightness - brightnessRef.current) * 0.15
+
+      drawCanvas(blurRef.current, brightnessRef.current)
+
+      if (
+        Math.abs(blurRef.current - targetBlur) > 0.1 ||
+        Math.abs(brightnessRef.current - targetBrightness) > 0.01
+      ) {
+        animationRef.current = requestAnimationFrame(animate)
+      }
+    }
+
+    animationRef.current = requestAnimationFrame(animate)
+
+    return () => {
+      if (animationRef.current) cancelAnimationFrame(animationRef.current)
+    }
+  }, [isHovered])
+
+  const planeSize = useMemo(() => ({
+    width: htmlWidth / 100,
+    height: htmlHeight / 100
+  }), [])
+
   return (
     <group {...props}>
-      <Html transform center position={[0, 0, 0]} scale={htmlScale} occlude={false}>
-        <div
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-          onClick={onZoomRequest}
-          style={{
-            width: '127px',
-            height: '175px',
-            position: 'relative',
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            cursor: 'pointer',
-            overflow: 'hidden',
-            backgroundColor:"rgba(155, 155, 155, 1)",
-            transition: 'all 0.5s ease',
-          }}
-        >
-          {/* Image de fond */}
-          <img
-            src={imageUrl}
-            alt={title}
-            style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-              filter: isHovered ? 'blur(0px) brightness(1)' : 'blur(8px) brightness(0.5)',
-              transition: 'all 0.5s ease',
-            }}
-          />
-
-          {/* Texte par défaut */}
-          {!isHovered && (
-            <div
-              style={{
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-                transform: 'translate(-50%, -50%)',
-                color: '#fff',
-                textAlign: 'center',
-                fontFamily: '"Arial", sans-serif',
-                pointerEvents: 'none',
-              }}
-            >
-              <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: 'bold' }}>{title}</h3>
-              <p style={{ margin: '4px 0 0 0', fontSize: '0.8rem', color: '#d4af37' }}>{subtitle}</p>
-            </div>
-          )}
-
-          {/* Message hover */}
-          {isHovered && (
-            <div
-              style={{
-                position: 'absolute',
-                bottom: '10px',
-                width: '100%',
-                textAlign: 'center',
-                color: '#d4af37',
-                fontSize: '0.8rem',
-                fontWeight: 500,
-                animation: 'pulse 1.5s ease-in-out infinite',
-              }}
-            >
-              ✨ Cliquer pour voir plus
-              <style>{`
-                @keyframes pulse {
-                  0%, 100% { opacity: 1; }
-                  50% { opacity: 0.6; }
-                }
-              `}</style>
-            </div>
-          )}
-        </div>
-      </Html>
+      <mesh
+        scale={[planeSize.width * scale, planeSize.height * scale, 1]}
+        onPointerOver={() => setIsHovered(true)}
+        onPointerOut={() => setIsHovered(false)}
+        onClick={onZoomRequest(title)}
+        castShadow
+      >
+        <planeGeometry args={[1, 1]} />
+        <meshBasicMaterial map={canvasTexture} toneMapped={false} transparent />
+      </mesh>
     </group>
   )
 }

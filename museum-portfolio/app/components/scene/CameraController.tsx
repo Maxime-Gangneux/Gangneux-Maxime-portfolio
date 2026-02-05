@@ -1,76 +1,89 @@
-import { PerspectiveCamera, OrbitControls } from '@react-three/drei'
-import { useFrame } from '@react-three/fiber'
+import { useThree, useFrame } from '@react-three/fiber'
 import { useRef, useEffect } from 'react'
 import * as THREE from 'three'
-import { CAMERA_POSITIONS } from '../../utils/cameraPositions'
 
-const DURATION = 3
+export function CameraControls() {
+  const { camera, gl } = useThree()
 
-export function CameraController({ scrollValue, isZooming, tableauPosition, enableOrbit }) {
-  const cameraRef = useRef(null)
-  const currentLookAt = useRef(new THREE.Vector3())
-  const time = useRef(0)
-  const targetT = useRef(0)
-  const currentT = useRef(0)
+  const keys = useRef({ z: false, q: false, s: false, d: false })
+  const dragging = useRef(false)
 
-  const positionCurve = useRef(
-    new THREE.CatmullRomCurve3(
-      CAMERA_POSITIONS.map(p => new THREE.Vector3(...p.position)),
-      false,
-      'catmullrom',
-      0.5
-    )
-  )
+  const yaw = useRef(0)
+  const pitch = useRef(0)
 
-  const lookAtCurve = useRef(
-    new THREE.CatmullRomCurve3(
-      CAMERA_POSITIONS.map(p => new THREE.Vector3(...p.lookAt)),
-      false,
-      'catmullrom',
-      0.5
-    )
-  )
+  const speed = 0.05
+  const sensitivity = 0.003
+
+  const bounds = {
+    minX: -8,
+    maxX: 4.8,
+    minZ: -4.9,
+    maxZ: 4.9
+  }
 
   useEffect(() => {
-    const max = CAMERA_POSITIONS.length - 1
-    targetT.current = THREE.MathUtils.clamp(scrollValue / max, 0, 1)
-  }, [scrollValue])
+    camera.position.set(0, 2, 3)
+    camera.rotation.order = 'YXZ'
 
-  useFrame((_, delta) => {
-    if (!cameraRef.current || enableOrbit) return
-
-    if (isZooming) {
-      cameraRef.current.position.lerp(
-        new THREE.Vector3(tableauPosition[0], tableauPosition[1], tableauPosition[2] + 0.3),
-        delta * 3
-      )
-      currentLookAt.current.lerp(new THREE.Vector3(...tableauPosition), delta * 3)
-    } else {
-      const diff = targetT.current - currentT.current
-
-      if (Math.abs(diff) > 0.0005) {
-        const speed = delta / DURATION
-        currentT.current += Math.sign(diff) * speed
-        currentT.current = THREE.MathUtils.clamp(currentT.current, 0, 1)
-      } else {
-        currentT.current = targetT.current
-      }
-
-
-      const pos = positionCurve.current.getPointAt(currentT.current)
-      const lookAt = lookAtCurve.current.getPointAt(currentT.current)
-
-      cameraRef.current.position.copy(pos)
-      currentLookAt.current.copy(lookAt)
+    const down = e => {
+    if (e.key === 'z' || e.key === 'ArrowUp') keys.current.z = true
+    if (e.key === 's' || e.key === 'ArrowDown') keys.current.s = true
+    if (e.key === 'd' || e.key === 'ArrowRight') keys.current.q = true
+    if (e.key === 'q' || e.key === 'ArrowLeft') keys.current.d = true
     }
 
-    cameraRef.current.lookAt(currentLookAt.current)
+    const up = e => {
+    if (e.key === 'z' || e.key === 'ArrowUp') keys.current.z = false
+    if (e.key === 's' || e.key === 'ArrowDown') keys.current.s = false
+    if (e.key === 'd' || e.key === 'ArrowRight') keys.current.q = false
+    if (e.key === 'q' || e.key === 'ArrowLeft') keys.current.d = false
+    }
+
+    const mouseDown = () => dragging.current = true
+    const mouseUp = () => dragging.current = false
+
+    const mouseMove = e => {
+      if (!dragging.current) return
+      yaw.current -= e.movementX * sensitivity
+      pitch.current -= e.movementY * sensitivity
+      pitch.current = Math.max(-Math.PI / 3, Math.min(Math.PI / 3, pitch.current))
+    }
+
+    window.addEventListener('keydown', down)
+    window.addEventListener('keyup', up)
+    gl.domElement.addEventListener('mousedown', mouseDown)
+    window.addEventListener('mouseup', mouseUp)
+    window.addEventListener('mousemove', mouseMove)
+
+    return () => {
+      window.removeEventListener('keydown', down)
+      window.removeEventListener('keyup', up)
+      gl.domElement.removeEventListener('mousedown', mouseDown)
+      window.removeEventListener('mouseup', mouseUp)
+      window.removeEventListener('mousemove', mouseMove)
+    }
+  }, [])
+
+  useFrame(() => {
+    camera.rotation.y = yaw.current
+    camera.rotation.x = pitch.current
+
+    const forward = new THREE.Vector3(0, 0, -1).applyEuler(camera.rotation)
+    forward.y = 0
+    forward.normalize()
+
+    const right = new THREE.Vector3().crossVectors(forward, camera.up).normalize()
+
+    if (keys.current.z) camera.position.addScaledVector(forward, speed)
+    if (keys.current.s) camera.position.addScaledVector(forward, -speed)
+    if (keys.current.q) camera.position.addScaledVector(right, speed)
+    if (keys.current.d) camera.position.addScaledVector(right, -speed)
+
+    camera.position.x = Math.max(bounds.minX, Math.min(bounds.maxX, camera.position.x))
+    camera.position.z = Math.max(bounds.minZ, Math.min(bounds.maxZ, camera.position.z))
+
+    camera.position.y = 1.15
   })
 
-  return (
-    <>
-      <PerspectiveCamera ref={cameraRef} makeDefault position={[0, 2, 5]} />
-      {enableOrbit && <OrbitControls enableDamping />}
-    </>
-  )
+  return null
 }

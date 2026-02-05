@@ -7,25 +7,29 @@ import { FullPageView } from './components/Fullpageview'
 export default function Page() {
   const scrollTarget = useRef(0)
   const [scrollValue, setScrollValue] = useState(0)
-  const [isZooming, setIsZooming] = useState(false)
   const [enableOrbit, setEnableOrbit] = useState(false)
 
-  // positions des deux tableaux
+  // positions des tableaux
   const tableaux = [
     { position: [-1.286, 1.085, 0.36], imageUrl: '/arsmain.png', title: 'ARS Telecom', subtitle: 'IP & Réseau' },
-    { position: [3.58, 1.085, 0.36], imageUrl: '/arsmain.png', title: 'Verbalis', subtitle: 'VMS / IA' }
+    { position: [3.58, 1.085, 0.36], imageUrl: '/arsmain.png', title: 'Verbalis', subtitle: 'VMS / IA' },
+    { position: [-6.4, 1.085, 0.36], imageUrl: '/arsmain.png', title: 'ARS Telecom', subtitle: 'IP & Réseau' },
+    { position: [-7.11, 1.085, -5], imageUrl: '/arsmain.png', title: 'ARS Telecom', subtitle: 'IP & Réseau' },
+    { position: [-3.15, 1.085, -5], imageUrl: '/arsmain.png', title: 'ARS Telecom', subtitle: 'IP & Réseau' },
+    { position: [1.28, 1.085, -5], imageUrl: '/arsmain.png', title: 'ARS Telecom', subtitle: 'IP & Réseau' },
+    { position: [3.88, 1.085, -5], imageUrl: '/arsmain.png', title: 'ARS Telecom', subtitle: 'IP & Réseau' },
   ]
 
   useEffect(() => {
     const onWheel = e => {
-      if (enableOrbit || isZooming) return
+      if (enableOrbit) return
       e.preventDefault()
       scrollTarget.current += e.deltaY * 0.001
     }
 
     window.addEventListener('wheel', onWheel, { passive: false })
     return () => window.removeEventListener('wheel', onWheel)
-  }, [enableOrbit, isZooming])
+  }, [enableOrbit])
 
   useEffect(() => {
     let raf
@@ -37,14 +41,18 @@ export default function Page() {
     return () => cancelAnimationFrame(raf)
   }, [])
 
+  // fonction pour gérer le click sur un tableau
+  const handleZoomRequest = (tableau: typeof tableaux[0]) => {
+    console.log('Tableau cliqué :', tableau.title)
+  }
+
   return (
     <>
       <Scene
         scrollValue={scrollValue}
-        isZooming={isZooming}
         enableOrbit={enableOrbit}
         tableaux={tableaux}
-        onZoomRequest={() => setIsZooming(true)}
+        onZoomRequest={handleZoomRequest}
       />
       <FullPageView />
     </>

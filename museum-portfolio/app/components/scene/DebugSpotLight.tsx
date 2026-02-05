@@ -29,12 +29,12 @@ export function DebugSpotLight({ targetPosition, ...props }) {
     <>
       <spotLight ref={lightRef} {...props} />
       <object3D ref={targetRef} position={targetPosition} />
-      <line ref={lineRef}>
+      {/* <line ref={lineRef}>
         <bufferGeometry>
           <bufferAttribute attach="attributes-position" count={2} array={new Float32Array(6)} itemSize={3} />
         </bufferGeometry>
         <lineBasicMaterial color="hotpink" />
-      </line>
+      </line> */}
     </>
   )
 }
