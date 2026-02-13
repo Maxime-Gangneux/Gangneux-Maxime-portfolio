@@ -1,25 +1,31 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { Scene } from './components/scene/Scene'
+import dynamic from 'next/dynamic'
 import ProjectCaseStudy from './components/Fullpageview'
 import HomeScreen from './components/HomeScreen'
 import project from '@/public/data/projects.json'
+
+const Scene = dynamic(() => import('./components/scene/Scene').then(mod => ({ default: mod.Scene })), {
+  ssr: false
+})
+
+interface Tableau {
+  projectId: string
+  position: [number, number, number]
+  imageUrl: string
+  title: string
+  subtitle: string
+}
 
 export default function Page() {
   const scrollTarget = useRef(0)
   const [scrollValue, setScrollValue] = useState(0)
   const [enableOrbit, setEnableOrbit] = useState(false)
   const [showHomeScreen, setShowHomeScreen] = useState(true)
-  const [selectedTableau, setSelectedTableau] = useState<null | {
-    projectId: string
-    position: number[]
-    imageUrl: string
-    title: string
-    subtitle: string
-  }>(null)
+  const [selectedTableau, setSelectedTableau] = useState<Tableau | null>(null)
 
-  const tableaux = [
+  const tableaux: Tableau[] = [
     { projectId: 'ARS_Telecom', position: [-1.286, 1.085, 0.36], imageUrl: '/arsmain.png', title: 'ARS Telecom', subtitle: 'IP & Réseau' },
     { projectId: 'VERBALIS_VPI', position: [3.58, 1.085, 0.36], imageUrl: '/PV_verbalis.png', title: 'Verbalis', subtitle: 'VMS / IA' },
     { projectId: 'KIDSLAB_MKT_ALCOR', position: [-6.4, 1.085, 0.36], imageUrl: '/Kidlabs/home.png', title: 'Kidslab', subtitle: 'Jeu & éducation' },
@@ -42,7 +48,7 @@ export default function Page() {
     return () => cancelAnimationFrame(raf)
   }, [selectedTableau])
 
-  const handleZoomRequest = (tableau) => {
+  const handleZoomRequest = (tableau: Tableau) => {
     console.log(tableau)
     setSelectedTableau(tableau)
   }
@@ -53,22 +59,15 @@ export default function Page() {
 
   return (
     <>
-      {/* Page d'accueil immersive */}
-      {showHomeScreen && (
-        <HomeScreen onStart={handleStartExperience} />
-      )}
+      {showHomeScreen && <HomeScreen onStart={handleStartExperience} />}
 
-      {/* Scène 3D - Portfolio galerie */}
       {!showHomeScreen && !selectedTableau && (
         <Scene
-          scrollValue={scrollValue}
-          enableOrbit={enableOrbit}
           tableaux={validTableaux}
           onZoomRequest={handleZoomRequest}
         />
       )}
 
-      {/* Vue détaillée du projet sélectionné */}
       {selectedTableau && (
         <ProjectCaseStudy 
           projectId={selectedTableau.projectId} 

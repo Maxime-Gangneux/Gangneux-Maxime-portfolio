@@ -1,3 +1,5 @@
+'use client';
+
 import { CanvasTexture } from 'three'
 import React, { FC, useState, useMemo, useEffect, useRef } from 'react'
 
@@ -32,9 +34,10 @@ export const TableauIntro: FC<Tableau3DProps> = ({
   const blurRef = useRef(8)
   const brightnessRef = useRef(0.5)
   const animationRef = useRef<number | null>(null)
+  const [canvasTexture, setCanvasTexture] = useState<CanvasTexture | null>(null)
 
-  // Création du canvas et texture
-  const canvasTexture = useMemo(() => {
+  // Création du canvas et texture (déféré jusqu'au client)
+  useEffect(() => {
     const canvas = document.createElement('canvas')
     canvas.width = htmlWidth * 2
     canvas.height = htmlHeight * 2
@@ -42,11 +45,12 @@ export const TableauIntro: FC<Tableau3DProps> = ({
     // Transition CSS (pour fallback, même si on anime avec requestAnimationFrame)
     canvas.style.setProperty('transition', 'filter 0.3s ease')
 
-    return new CanvasTexture(canvas)
+    setCanvasTexture(new CanvasTexture(canvas))
   }, [])
 
   // Fonction pour dessiner le tableau
   const drawCanvas = (blur: number, brightness: number) => {
+    if (!canvasTexture) return
     const canvas = canvasTexture.image as HTMLCanvasElement
     const ctx = canvas.getContext('2d')!
     const img = new Image()
@@ -129,23 +133,25 @@ export const TableauIntro: FC<Tableau3DProps> = ({
 
   return (
     <group {...props}>
-      <mesh
-        scale={[planeSize.width * scale, planeSize.height * scale, 1]}
-        onPointerOver={() => setIsHovered(true)}
-        onPointerOut={() => setIsHovered(false)}
-        onClick={() =>
-          onZoomRequest?.({
-            projectId,
-            title,
-            subtitle,
-            imageUrl
-          })
-        }
-        castShadow
-      >
-        <planeGeometry args={[1, 1]} />
-        <meshBasicMaterial map={canvasTexture} toneMapped={false} transparent />
-      </mesh>
+      {canvasTexture && (
+        <mesh
+          scale={[planeSize.width * scale, planeSize.height * scale, 1]}
+          onPointerOver={() => setIsHovered(true)}
+          onPointerOut={() => setIsHovered(false)}
+          onClick={() =>
+            onZoomRequest?.({
+              projectId,
+              title,
+              subtitle,
+              imageUrl
+            })
+          }
+          castShadow
+        >
+          <planeGeometry args={[1, 1]} />
+          <meshBasicMaterial map={canvasTexture} toneMapped={false} transparent />
+        </mesh>
+      )}
     </group>
   )
 }

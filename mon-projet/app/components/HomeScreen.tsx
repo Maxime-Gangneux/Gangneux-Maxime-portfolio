@@ -9,6 +9,14 @@ interface HomeScreenProps {
 
 export default function HomeScreen({ onStart }: HomeScreenProps) {
   const [isVisible, setIsVisible] = useState(true)
+  const [dimensions, setDimensions] = useState({ width: 1024, height: 768 })
+  const [isMounted, setIsMounted] = useState(false)
+
+  useEffect(() => {
+    setIsMounted(true)
+    // Set initial dimensions after mount
+    setDimensions({ width: window.innerWidth, height: window.innerHeight })
+  }, [])
 
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
@@ -51,17 +59,17 @@ export default function HomeScreen({ onStart }: HomeScreenProps) {
 
             {/* Particules flottantes */}
             <div className="absolute inset-0 overflow-hidden">
-              {[...Array(20)].map((_, i) => (
+              {isMounted && [...Array(20)].map((_, i) => (
                 <motion.div
                   key={i}
                   className="absolute w-1 h-1 bg-blue-400 rounded-full"
                   initial={{ 
-                    x: Math.random() * window.innerWidth,
-                    y: Math.random() * window.innerHeight,
+                    x: Math.random() * dimensions.width,
+                    y: Math.random() * dimensions.height,
                     opacity: 0
                   }}
                   animate={{
-                    y: [null, Math.random() * window.innerHeight],
+                    y: [null, Math.random() * dimensions.height],
                     opacity: [0, 0.8, 0]
                   }}
                   transition={{

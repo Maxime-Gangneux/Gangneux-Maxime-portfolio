@@ -7,22 +7,17 @@ import { log } from 'console';
 export interface CarouselSlide {
   id: number;
   title: string;
-  type: 'image' | 'video';
+  type: string; // plus permissif
   src: string;
   color?: string;
 }
 
-export interface Carousel {
-  slides: CarouselSlide[];
+type CarouselSlideProps = {
+  data: CarouselSlide[]
+  onScrollLockChange?: (locked: boolean) => void
 }
 
-interface ImmersiveCarouselProps {
-  onScrollLockChange?: (locked: boolean) => void;
-  data:  Carousel;
-}
-
-
-export const ImmersiveCarousel: React.FC<ImmersiveCarouselProps> = ({ onScrollLockChange, data }) => {
+export const ImmersiveCarousel = ({ data, onScrollLockChange }: CarouselSlideProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [stepInSlide, setStepInSlide] = useState(0); // 0 = titre+flou, 1 = image pure

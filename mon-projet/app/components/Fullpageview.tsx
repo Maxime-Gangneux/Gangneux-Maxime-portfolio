@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { HeroSection } from './full-page.tsx/HeroSection';
-import { ProjectOverview } from './full-page.tsx/ProjectOverview';
+import ProjectOverview from './full-page.tsx/ProjectOverview';
 import { ContextSection } from './full-page.tsx/ContextSection';
 import { ImmersiveCarousel } from './full-page.tsx/ScreenshotsCarousel';
 import { Footer } from './full-page.tsx/Footer';

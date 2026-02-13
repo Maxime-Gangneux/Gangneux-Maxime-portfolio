@@ -1,3 +1,5 @@
+'use client';
+
 import { useThree, useFrame } from '@react-three/fiber'
 import { useRef, useEffect } from 'react'
 import * as THREE from 'three'
@@ -25,14 +27,14 @@ export function CameraControls() {
     camera.position.set(0, 2, 3)
     camera.rotation.order = 'YXZ'
 
-    const down = e => {
+    const down = (e: KeyboardEvent) => {
     if (e.key === 'z' || e.key === 'ArrowUp') keys.current.z = true
     if (e.key === 's' || e.key === 'ArrowDown') keys.current.s = true
     if (e.key === 'd' || e.key === 'ArrowRight') keys.current.q = true
     if (e.key === 'q' || e.key === 'ArrowLeft') keys.current.d = true
     }
 
-    const up = e => {
+    const up = (e: KeyboardEvent) => {
     if (e.key === 'z' || e.key === 'ArrowUp') keys.current.z = false
     if (e.key === 's' || e.key === 'ArrowDown') keys.current.s = false
     if (e.key === 'd' || e.key === 'ArrowRight') keys.current.q = false
@@ -42,7 +44,7 @@ export function CameraControls() {
     const mouseDown = () => dragging.current = true
     const mouseUp = () => dragging.current = false
 
-    const mouseMove = e => {
+    const mouseMove = (e: MouseEvent) => {
       if (!dragging.current) return
       yaw.current -= e.movementX * sensitivity
       pitch.current -= e.movementY * sensitivity

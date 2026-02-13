@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, useScroll, useTransform, useInView, AnimatePresence } from 'framer-motion';
 
@@ -13,7 +15,11 @@ export interface ProjectOverviewType {
   details: OverviewDetail[];
 }
 
-export const ProjectOverview: React.FC<ProjectOverviewType> = ({data}) => {
+type ProjectOverviewProps = {
+  data: ProjectOverviewType
+}
+
+export default function ProjectOverview({ data }: ProjectOverviewProps) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
@@ -33,9 +39,13 @@ export const ProjectOverview: React.FC<ProjectOverviewType> = ({data}) => {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] }
+      transition: { 
+        duration: 0.7, 
+        ease: [0.22, 1, 0.36, 1] as [number, number, number, number]
+      }
     }
   };
+
 
   return (
     <section ref={ref} className="py-32 px-6 bg-white">
@@ -65,7 +75,7 @@ export const ProjectOverview: React.FC<ProjectOverviewType> = ({data}) => {
           </div>
 
           <div className="grid md:grid-cols-2 gap-8">
-            <div classNamdetailse="p-8 bg-slate-50 rounded-2xl">
+            <div className="p-8 bg-slate-50 rounded-2xl">
               <h4 className="text-lg font-medium text-slate-900 mb-3">Public cible</h4>
               <p className="text-slate-600 leading-relaxed font-light">
                 {data.public}

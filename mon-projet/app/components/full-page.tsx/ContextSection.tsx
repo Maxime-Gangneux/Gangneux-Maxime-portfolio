@@ -1,28 +1,21 @@
+'use client';
+
 import React, { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import * as Icons from '@mui/icons-material';
 
-export interface TimelineItem {
-  month: string;
-  event: string;
-}
-
-export interface Constraint {
-  title: string;
-  desc: string;
-  icon?: string;
-}
-
-export interface keyQuestion {
-  question: string;
-}
-
-
-export interface ContextType {
-  initialSituation: string;
-  timeline: TimelineItem[];
-  constraints: Constraint[];
-  keyQuestions: keyQuestion[];
+type ContextType = {
+  initialSituation: string
+  timeline: {
+    month: string
+    event: string
+  }[]
+  constraints: {
+    title: string
+    desc: string
+    icon?: string
+  }[]
+  keyQuestions: string[]
 }
 
 export const ContextSection: React.FC<{ data: ContextType }> = ({ data }) => {
