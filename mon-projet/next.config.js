@@ -4,8 +4,6 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  basePath: '/Gangneux-Maxime-portfolio',
-  trailingSlash: false,
-};
+}
 
-module.exports = nextConfig;
+module.exports = nextConfig
