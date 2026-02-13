@@ -3,7 +3,13 @@ import React, { FC, useState, useMemo, useEffect, useRef } from 'react'
 
 type Tableau3DProps = React.ComponentProps<'group'> & {
   scale?: number
-  onZoomRequest?: (title) => void
+  projectId?: string
+  onZoomRequest?: (tableau: {
+    projectId?: string
+    title: string
+    subtitle: string
+    imageUrl: string
+  }) => void
   imageUrl?: string
   title?: string
   subtitle?: string
@@ -11,6 +17,7 @@ type Tableau3DProps = React.ComponentProps<'group'> & {
 
 export const TableauIntro: FC<Tableau3DProps> = ({
   scale = 0.75,
+  projectId,
   onZoomRequest,
   imageUrl = '/arsmain.png',
   title = 'ARS Telecom',
@@ -126,7 +133,14 @@ export const TableauIntro: FC<Tableau3DProps> = ({
         scale={[planeSize.width * scale, planeSize.height * scale, 1]}
         onPointerOver={() => setIsHovered(true)}
         onPointerOut={() => setIsHovered(false)}
-        onClick={onZoomRequest(title)}
+        onClick={() =>
+          onZoomRequest?.({
+            projectId,
+            title,
+            subtitle,
+            imageUrl
+          })
+        }
         castShadow
       >
         <planeGeometry args={[1, 1]} />

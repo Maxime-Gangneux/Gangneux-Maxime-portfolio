@@ -1,0 +1,385 @@
+  {
+    "projects": [
+      {
+        "id": "ARS_Telecom",
+        "meta": {
+          "year": 2024,
+          "role": "Développeur Full Stack",
+          "slug": "ars-telecom"
+        },
+        "hero": {
+          "kicker": "Case Study — 2024",
+          "title": "Installation Boîtiers Caméras",
+          "subtitle": "Solution pour assister le technicien dans la configuration et sécurisation des caméras",
+          "role": "Lead Product Designer & Frontend Developer"
+        },
+        "overview": {
+          "presentation": "Projet visant à simplifier l’installation et la configuration des boîtiers caméras tout en garantissant la sécurité des flux vidéo et l’intégrité des données.",
+          "public": "Techniciens installateurs et équipes de maintenance",
+          "objectifs": "Assurer une installation rapide, réduire les erreurs de configuration et sécuriser l’accès aux caméras",
+          "details": [
+            {
+              "title": "Assistance au technicien",
+              "desc": "Interface guidant le technicien pas à pas pour configurer chaque caméra"
+            },
+            {
+              "title": "Sécurité renforcée",
+              "desc": "Chiffrement des flux, authentification sécurisée et permissions adaptées"
+            },
+            {
+              "title": "Monitoring temps réel",
+              "desc": "Surveillance de l’état des caméras et alertes en cas de problème"
+            },
+            {
+              "title": "Historique et reporting",
+              "desc": "Logs détaillés pour chaque installation et intervention"
+            }
+          ]
+        },
+        "context": {
+          "initialSituation": "Les techniciens perdaient du temps lors de l’installation des caméras et des configurations incorrectes compromettaient la sécurité.",
+          "timeline": [
+            {
+              "month": "Janv. 2024",
+              "event": "Analyse des besoins et étude des installations existantes"
+            },
+            {
+              "month": "Janv. 2024",
+              "event": "Prototype d’interface pour l’assistance du technicien"
+            },
+            {
+              "month": "Fév. 2024",
+              "event": "Tests sur le materiel"
+            },
+            {
+              "month": "Fév. 2024",
+              "event": "Déploiement initial et collecte de feedback"
+            }
+          ],
+          "constraints": [
+            {
+              "title": "Sécurité",
+              "desc": "Chiffrage et authentification",
+              "icon": "Security"
+            },
+            {
+              "title": "Ergonomie",
+              "desc": "Interface intuitive",
+              "icon": "AccessibilityNew"
+            },
+            {
+              "title": "Fiabilité",
+              "desc": "Fonctionne même en réseau limité",
+              "icon": "Speed"
+            }
+          ],
+          "keyQuestions": [
+            "Comment guider efficacement le technicien pour chaque caméra ?",
+            "Comment s’assurer que la configuration respecte les normes de sécurité ?",
+            "Comment minimiser le temps total d’installation ?",
+            "Comment détecter et corriger les erreurs de configuration en temps réel ?"
+          ]
+        },
+        "carousel": {
+          "slides": [
+            {
+              "id": 1,
+              "title": "Interface Technicien",
+              "type": "image",
+              "src": "/arsmain.png",
+              "color": "from-slate-900/80 to-blue-900/80"
+            },
+            {
+              "id": 2,
+              "title": "Installation Caméra",
+              "type": "image",
+              "src": "/ars_dashboard.png",
+              "color": "from-purple-900/80 to-pink-900/80"
+            },
+            {
+              "id": 2,
+              "title": "Installation Caméra",
+              "type": "image",
+              "src": "/ars_config.png",
+              "color": "from-purple-900/80 to-pink-900/80"
+            }
+          ]
+        }
+      },
+      {
+        "id": "VERBALIS_VPI",
+        "meta": {
+          "year": 2026,
+          "role": "Développeur Full Stack",
+          "slug": "verbalisation-vpi"
+        },
+        "hero": {
+          "kicker": "Case Study — 2026",
+          "title": "Solution de Vidéo-Verbalisation (VPI)",
+          "subtitle": "Automatisation et traçabilité des procès-verbaux à partir des caméras municipales",
+          "role": "Full Stack Developer"
+        },
+        "overview": {
+          "presentation": "Le projet VPI vise à centraliser les flux vidéo, générer automatiquement les procès-verbaux électroniques et garantir une traçabilité complète des opérations.",
+          "public": "Centres de supervision urbaine, collectivités locales",
+          "objectifs": "Centraliser les données vidéo, automatiser les PV, assurer la conformité réglementaire et optimiser l’ergonomie pour les opérateurs",
+          "details": [
+            {
+              "title": "Automatisation intelligente",
+              "desc": "Exploitation des métadonnées et de l’IA embarquée pour pré-remplir les champs des PV"
+            },
+            {
+              "title": "Interopérabilité",
+              "desc": "Compatibilité avec différents VMS, notamment Hanwha WAVE"
+            },
+            {
+              "title": "Sécurité et conformité",
+              "desc": "Authentification LDAP/AD, journalisation, traçabilité complète et respect CNIL/RGPD"
+            },
+            {
+              "title": "Interface ergonomique",
+              "desc": "Design clair et responsive pour les agents en CSU"
+            }
+          ]
+        },
+        "context": {
+          "initialSituation": "Les opérateurs perdaient du temps à traiter manuellement les infractions et la sécurité des flux vidéo n’était pas toujours garantie.",
+          "timeline": [
+            {
+              "month": "Janv. 2026",
+              "event": "Analyse des besoins et cahier des charges"
+            },
+            {
+              "month": "Janv. 2026",
+              "event": "Prototype backend et frontend"
+            },
+            {
+              "month": "Fév. 2026",
+              "event": "Tests internes avec données simulées"
+            },
+            {
+              "month": "Fév. 2026",
+              "event": "Déploiement pilote et collecte de feedback"
+            }
+          ],
+          "constraints": [
+            {
+              "title": "Sécurité",
+              "desc": "Toutes les communications doivent être chiffrées et authentifiées",
+              "icon": "Security"
+            },
+            {
+              "title": "Interopérabilité",
+              "desc": "Compatibilité avec différents VMS et schémas standards",
+              "icon": "SyncAlt"
+            },
+            {
+              "title": "Ergonomie",
+              "desc": "Interface fluide et intuitive pour les opérateurs CSU",
+              "icon": "Smartphone"
+            },
+            {
+              "title": "Traçabilité",
+              "desc": "Journalisation complète des actions et des changements d’état",
+              "icon": "History"
+            }
+          ],
+          "keyQuestions": [
+            "Comment automatiser la création des PV à partir des flux vidéo ?",
+            "Comment garantir la conformité aux exigences CNIL et RGPD ?",
+            "Comment assurer l’ergonomie pour les opérateurs CSU ?",
+            "Comment préparer le système à l’intégration avec différents VMS ?"
+          ]
+        },
+        "carousel": {
+          "slides": [
+            {
+              "id": 1,
+              "title": "Dashboard VPI",
+              "type": "image",
+              "src": "/PV_verbalis.png",
+              "color": "from-slate-900/80 to-blue-900/80"
+            },
+            {
+              "id": 2,
+              "title": "Visualisation des flux",
+              "type": "image",
+              "src": "/page_admin_verbalis.png",
+              "color": "from-purple-900/80 to-pink-900/80"
+            },
+            {
+              "id": 3,
+              "title": "Création automatique de PV",
+              "type": "image",
+              "src": "/settings_verbalis.png",
+              "color": "from-green-900/80 to-teal-900/80"
+            },
+            {
+              "id": 4,
+              "title": "Création automatique de PV",
+              "type": "image",
+              "src": "/list_infraction_verbalis.png",
+              "color": "from-green-900/80 to-teal-900/80"
+            }
+          ]
+        }
+      },
+      {
+        "id": "KIDSLAB_MKT_ALCOR",
+        "meta": {
+          "year": 2024,
+          "role": "Développeur Full Stack / IoT",
+          "slug": "kidslab-mkt-alcor"
+        },
+        "hero": {
+          "kicker": "UHA 4.0 Project — 2024",
+          "title": "KidsLab - MKT [Alcor]",
+          "subtitle": "Plateforme multi-valises pour un jeu éducatif collaboratif",
+          "role": "Full Stack / IoT Developer"
+        },
+        "overview": {
+          "presentation": "Mise en œuvre d'un serveur maître pilotant des sessions de jeu éducatif multi-utilisateurs, avec suivi des valises, gestion des épreuves et interface tactile.",
+          "public": "Élèves de 11 à 18 ans, enseignants, animateurs",
+          "objectifs": "Créer une expérience collaborative, modulable et ludique pour sensibiliser aux métiers de l'industrie et des systèmes embarqués.",
+          "details": [
+            {
+              "title": "Serveur maître",
+              "desc": "Interface centrale tactile permettant de suivre chaque valise et valider les épreuves",
+              "icon": "DesktopWindows"
+            },
+            {
+              "title": "Communication Wi-Fi",
+              "desc": "Chaque valise communique via ESP avec le serveur, modules internes câblés pour fiabilité",
+              "icon": "Wifi"
+            },
+            {
+              "title": "Jeu éducatif multi-utilisateurs",
+              "desc": "6 épreuves par valise à résoudre en équipe, désamorçage de la bombe lorsque toutes les valises sont complètes",
+              "icon": "SportsEsports"
+            },
+            {
+              "title": "Interface et suivi",
+              "desc": "Chronomètres synchronisés, barres de progression, Wall of Fame et historique des parties",
+              "icon": "Timer"
+            }
+          ]
+        },
+        "context": {
+          "initialSituation": "Le client avait un prototype de valise électronique inspiré du jeu Keep Talking Game, nécessitant un serveur central pour orchestrer les parties.",
+          "timeline": [
+            {
+              "month": "Déc. 2024",
+              "event": "Analyse du cahier des charges et étude du prototype existant"
+            },
+            {
+              "month": "Déc. 2024",
+              "event": "Développement du serveur maître et des interfaces valises"
+            },
+            {
+              "month": "Janv. 2025",
+              "event": "Tests multi-valises en conditions réelles"
+            },
+            {
+              "month": "Janv 2025",
+              "event": "Optimisations, suivi des scores et archivage des sessions"
+            }
+          ],
+          "constraints": [
+            {
+              "title": "Fiabilité Wi-Fi",
+              "desc": "Les valises doivent rester connectées malgré les interférences et IP dynamiques",
+              "icon": "WifiProtectedSetup"
+            },
+            {
+              "title": "Synchronisation temps réel",
+              "desc": "Tous les chronomètres démarrent simultanément sur chaque valise",
+              "icon": "Timer"
+            },
+            {
+              "title": "Sécurité et accès",
+              "desc": "Authentification via mot de passe ou QR code pour devenir GameMaster",
+              "icon": "Lock"
+            },
+            {
+              "title": "Évolutivité du jeu",
+              "desc": "Paramétrage de la difficulté, gestion des pénalités et adaptation du temps selon l’âge",
+              "icon": "Tune"
+            }
+          ],
+          "keyQuestions": [
+            "Comment synchroniser toutes les valises en temps réel ?",
+            "Comment suivre et valider les épreuves même en cas de dysfonctionnement ?",
+            "Comment archiver et consulter l’historique des parties ?",
+            "Comment gérer un compte à rebours global tout en adaptant la difficulté ?"
+          ]
+        },
+        "carousel": {
+          "slides": [
+            {
+              "id": 1,
+              "title": "Login",
+              "type": "image",
+              "src": "/Kidlabs/login.png",
+              "color": "from-indigo-900/80 to-purple-900/80"
+            },
+            {
+              "id": 2,
+              "title": "Home",
+              "type": "image",
+              "src": "/Kidlabs/home.png",
+              "color": "from-green-900/80 to-teal-900/80"
+            },
+            {
+              "id": 4,
+              "title": "Écran de jeu",
+              "type": "image",
+              "src": "/Kidlabs/ecran_jeu_2.png",
+              "color": "from-purple-900/80 to-pink-900/80"
+            },
+            {
+              "id": 10,
+              "title": "Défaite",
+              "type": "image",
+              "src": "/Kidlabs/defaite.png",
+              "color": "from-slate-900/80 to-blue-900/80"
+            },
+            {
+              "id": 11,
+              "title": "Victoire",
+              "type": "image",
+              "src": "/Kidlabs/victoire.png",
+              "color": "from-pink-900/80 to-red-900/80"
+            },
+            {
+              "id": 7,
+              "title": "Score",
+              "type": "image",
+              "src": "/Kidlabs/score.png",
+              "color": "from-blue-900/80 to-cyan-900/80"
+            },
+            {
+              "id": 5,
+              "title": "Stats valises",
+              "type": "image",
+              "src": "/Kidlabs/stats_3.png",
+              "color": "from-purple-900/80 to-indigo-900/80"
+            },
+            {
+              "id": 6,
+              "title": "Stats modules",
+              "type": "image",
+              "src": "/Kidlabs/stat_2.png",
+              "color": "from-teal-900/80 to-green-900/80"
+            },
+            {
+              "id": 9,
+              "title": "Maintenance",
+              "type": "image",
+              "src": "/Kidlabs/maintenance_2.png",
+              "color": "from-yellow-900/80 to-orange-900/80"
+            }
+          ]
+        }
+      }
+    ]
+  }

@@ -25,6 +25,7 @@ export function Scene({ tableaux, ...props }) {
           imageUrl={t.imageUrl}
           title={t.title}
           subtitle={t.subtitle}
+          projectId={t.projectId}
           onZoomRequest={props.onZoomRequest}
         />
       ))}

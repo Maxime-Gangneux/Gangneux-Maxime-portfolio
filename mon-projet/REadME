@@ -1,0 +1,105 @@
+# Project Case Study avec Lenis Scroll
+
+## Installation
+
+```bash
+npm install @studio-freight/lenis framer-motion
+```
+
+## Structure des fichiers
+
+```
+/full-page.tsx/
+  ├── HeroSection.tsx
+  ├── ProjectOverview.tsx
+  ├── ContextSection.tsx
+  ├── ImmersiveCarousel.tsx
+  └── Footer.tsx
+ProjectCaseStudy.tsx (composant principal)
+```
+
+## Fonctionnalités principales
+
+### 🎯 Lenis Scroll
+- Scroll ultra-fluide et naturel sur toute la page
+- Contrôle automatique du scroll (stop/start) lors de l'interaction avec le carrousel
+
+### 🎨 Carrousel Immersif
+- **Full-screen** : 100vw × 100vh
+- **Auto-centrage** : Le composant se centre automatiquement dans le viewport avant de bloquer le scroll
+- **Navigation par étapes** : 
+  - Étape 1 : Titre + flou radial
+  - Étape 2 : Image/vidéo révélée
+  - Un coup de molette = une étape (transitions snap)
+- **Scroll bidirectionnel** : Fonctionne en montant et descendant
+- **Déblocage intelligent** :
+  - Se débloque à la dernière slide (en descendant)
+  - Se débloque à la première slide (en remontant)
+  - Se rebloque automatiquement lors de la réentrée
+
+### 🔄 Gestion du scroll
+- IntersectionObserver pour détecter l'entrée dans la zone du carrousel
+- Throttle de 350ms pour éviter les scroll trop rapides
+- Synchronisation parfaite entre Lenis et le carrousel
+
+## Utilisation
+
+```tsx
+import ProjectCaseStudy from './ProjectCaseStudy';
+
+function App() {
+  return <ProjectCaseStudy />;
+}
+```
+
+## Personnalisation du carrousel
+
+Modifier le tableau `slides` dans `ImmersiveCarousel.tsx` :
+
+```tsx
+const slides = [
+  {
+    id: 1,
+    title: "Votre Titre",
+    type: "image", // ou "video"
+    src: "https://...",
+    color: "from-slate-900/80 to-blue-900/80"
+  },
+  // ...
+];
+```
+
+## Configuration Lenis (optionnelle)
+
+Dans `ProjectCaseStudy.tsx`, ajustez les paramètres :
+
+```tsx
+const lenis = new Lenis({
+  duration: 1.2,        // Durée de l'animation de scroll
+  easing: (t) => ...,   // Fonction d'easing
+  wheelMultiplier: 1,   // Vitesse de la molette
+  touchMultiplier: 2,   // Vitesse du touch
+});
+```
+
+## Comportement du scroll
+
+1. **Scroll normal** : Lenis gère le scroll fluide entre les sections
+2. **Entrée dans le carrousel** : 
+   - Détection automatique via IntersectionObserver
+   - Centrage du composant
+   - Lenis s'arrête (`lenis.stop()`)
+3. **Navigation dans le carrousel** : Wheel events gérés par le carrousel
+4. **Sortie du carrousel** : Lenis redémarre (`lenis.start()`)
+
+## Notes importantes
+
+- Le carrousel communique avec le parent via la prop `onScrollLockChange`
+- TypeScript est configuré pour une meilleure expérience de développement
+- Toutes les transitions sont optimisées pour la performance
+
+## Dépendances requises
+
+- `react` ^18.2.0
+- `framer-motion` ^10.16.4
+- `@studio-freight/lenis` ^1.0.33
